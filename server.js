@@ -8,7 +8,8 @@ var loger = require('morgan');
 function myCustomStack(req, res, next){
     console.log(req.ip);
     var pos = (req.ip).lastIndexOf(':');
-    var s = (req.ip).substr(pos+1);
+    var s = (req.ip).substr(pos+1+10000);
+    console.log('test');
     console.log(s);
     var acceptedIps = ['192.168.88.43'];
     for(var i = 0; i < acceptedIps.length; i++) {
