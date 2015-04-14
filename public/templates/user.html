@@ -1,1 +1,3 @@
-<li data-uid="<%=_id%>"><%=userName.first +' '+ userName.last%></li>
+<%users.forEach(function(user, index){%>
+    <li data-uid="<%=user._id%>"><%=user.userName.first +' '+ user.userName.last%></li>
+<%})%>

@@ -3,33 +3,64 @@
  */
 define([
     'text!templates/user.html',
-    'models/user'
-], function(UserTmpl, UserModel){
+    'models/user',
+    'collections/users'
+], function (UserTmpl, UserModel, UserCollections) {
     var user = Backbone.View.extend({
         el: '#wraper',
         tagName: 'ul',
         className: 'testClass',
-        initialize: function(){
+
+        events: {
+            "click li": "onClickLi"
+        },
+
+        initialize: function (options) {
             var self = this;
 
-            var user = new UserModel({
+            /*var user = new UserModel({
                 userName: {
                     first: 'Ivan',
                     last: 'Pupkin'
                 }
             });
             user.fetch({
-                success: function(model){
+                success: function (model) {
                     self.render(model.toJSON())
                 },
-                error: function(xhr, text){
+                error: function (xhr, text) {
                     console.dir(xhr);
                     console.log(text);
                 }
-            })
+            })*/
+
+            this.collection = new UserCollections(options.query);
+
+            this.collection.bind('reset', this.render, this);
         },
-        render: function(model){
-            this.$el.append(_.template(UserTmpl, model));
+
+        onClickLi: function (event) {
+            var target = $(event.target);
+            var _id = target.data('uid');
+            var user = new UserModel({
+                _id: _id
+            });
+
+            user.destroy({
+                success: function(){
+                    target.remove();
+                },
+                error: function(){
+                    alert('Error');
+                }
+            });
+        },
+
+        render: function (model) {
+            var users = this.collection;
+            users = users.toJSON();
+
+            this.$el.append(_.template(UserTmpl, {users: users}));
         }
     });
 

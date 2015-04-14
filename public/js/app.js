@@ -4,8 +4,17 @@
 define(['router'], function(Router){
     var init = function(){
         var appRouter = new Router();
+        var App = document.App;
+        App = App || {};
 
-        Backbone.history.start({silent: true});
+        App.currentUrl = Backbone.history.fragment || 'user';
+        console.log(Backbone.history.fragment);
+        if(!Backbone.history.fragment) {
+            Backbone.history.start();
+        } else {
+            Backbone.history.navigate('user', {trigger: true});
+        }
+
     };
 
     return {

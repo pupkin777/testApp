@@ -10,6 +10,7 @@ require.config({
         templates: '../templates',
         views: './views',
         models: './models',
+        collections: './collections',
         text: './libs/text'
     },
     shim: {

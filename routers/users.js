@@ -38,12 +38,38 @@ var customRouter = function(db) {
         })
     });
 
+    userRouter.get('/', function(req, res, next){
+        var count = req.query ? req.query.count : 50;
+
+        userModel.find().limit(count).exec(function(err, _users){
+            if(err){
+                console.log(err);
+            } else {
+                console.log(count);
+                res.status(200).send(_users);
+            }
+        })
+    });
+
     userRouter.get('/:username', function(req, res, next){
         var username = req.params.username;
 
         userModel.findOne({
             'userName.last': username
         }, function(err, _user){
+            if(err){
+                console.log(err);
+            } else {
+                console.dir(_user);
+                res.status(200).send(_user);
+            }
+        })
+    });
+
+    userRouter.delete('/:id', function(req, res, next){
+        var _id = req.params.id;
+
+        userModel.findByIdAndRemove(_id, function(err, _user){
             if(err){
                 console.log(err);
             } else {
